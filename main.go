@@ -28,7 +28,7 @@ func scraper(csvWriter *csv.Writer, limit int) {
 		log.Fatal(err)
 	}
 
-	doc.Find(".left-content article .post-title").Each(func(i int, s *goquery.Selection) {
+	doc.Find(".css-13l3l78 .e1nlzfl10").Each(func(i int, s *goquery.Selection) {
 		// For each item found, get the title
 		if i < limit {
 			data := []string{
@@ -46,18 +46,23 @@ func scraper(csvWriter *csv.Writer, limit int) {
 
 func main() {
 	godotenv.Load()
+
+	// get limit product from .env
 	limit, err := strconv.Atoi(os.Getenv("LIMIT"))
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// create csv files
 	csvFile, err := os.Create("product.csv")
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	// create csv writer
 	csvWriter := csv.NewWriter(csvFile)
 
+	// call function to read body and write to csv
 	scraper(csvWriter, limit)
 
 	csvFile.Close()
